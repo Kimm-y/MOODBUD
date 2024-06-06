@@ -1,0 +1,27 @@
+* {
+    margin: 0;
+    padding: 0;
+  
+} 
+
+/* nav{
+    color: #A2CD85;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1000;
+    margin-top:0;
+} */
+
+a{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin-top: 10px;
+   
+   
+    
+}
