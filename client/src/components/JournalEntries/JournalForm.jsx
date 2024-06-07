@@ -50,7 +50,7 @@
 // export default JournalEntryForm;
 
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -64,7 +64,7 @@ const JournalEntryForm = () => {
       await toast.promise(
         axios.post('http://127.0.0.1:8000/api/journal-entries/', { entry: journalEntry }, {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('access')}`
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}`
           }
         }),
         {
@@ -79,6 +79,12 @@ const JournalEntryForm = () => {
       console.error("Failed to submit journal entry", error);
     }
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("access_token") === null) {
+      window.location.href = "/login";
+    }
+  }, []);
 
   return (
     <>

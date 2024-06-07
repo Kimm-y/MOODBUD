@@ -100,7 +100,7 @@
 // Login.jsx
 import React, { useState } from 'react';
 import axiosInstance from '../Interceptors/Axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -112,7 +112,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axiosInstance.post('http://127.0.0.1:8000/token/', { username, password }, { withCredentials: false});
+      const { data } = await axiosInstance.post('http://127.0.0.1:8000/token/', { username, password }, { withCredentials: true});
       localStorage.setItem('access_token', data.access);
       localStorage.setItem('refresh_token', data.refresh);
       axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${data.access}`;
@@ -160,6 +160,7 @@ function Login() {
           </div>
         </div>
       </form>
+      <p>Don't have an account? <Link to="/register">Register</Link></p>
       <ToastContainer />
     </div>
   );

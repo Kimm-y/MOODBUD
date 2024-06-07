@@ -182,7 +182,7 @@ from rest_framework.response import Response
 
 
 from .models import MoodEntry, JournalEntry, Article, Profile
-from .serializers import JournalEntrySerializer, MoodEntrySerializer, ArticleSerializer, ProfileSerializer, UserSerializer
+from .serializers import JournalEntrySerializer, MoodEntrySerializer, ArticleSerializer, ProfileSerializer, RegistrationSerializer
 
 # Home view
 class HomeView(APIView):
@@ -193,8 +193,15 @@ class HomeView(APIView):
         return Response(content)
 
 # Register view
-class RegisterView(generics.CreateAPIView):
-    serializer_class = UserSerializer
+class RegistrationView(generics.CreateAPIView):
+    serializer_class = RegistrationSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 # Login view
 class LoginView(APIView):
@@ -279,7 +286,7 @@ def scrape_psychology_today_articles(request):
     return JsonResponse(articles, safe=False)
 
 # Profile view
-class ProfileView(generics.RetrieveUpdateAPIView):
+class ProfileView(generics.ListCreateAPIView):
     serializer_class = ProfileSerializer
     permission_classes = [permissions.IsAuthenticated]
 

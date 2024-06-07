@@ -9,27 +9,32 @@ import './Home.css';
 const Home = () => {
   const [message, setMessage] = useState('');
 
+  // useEffect(() => {
+  //   if (localStorage.getItem('access_token') === null) {
+  //     window.location.href = '/login';
+  //   } else {
+  //     (async () => {
+  //       try {
+  //         const { data } = await axios.get(
+  //           'http://127.0.0.1:8000/home/', {
+  //             headers: {
+  //               'Content-Type': 'application/json'
+  //             }
+  //           }
+  //         );
+  //         setMessage(data.message);
+  //       } catch (e) {
+  //         console.log('not auth');
+  //       }
+  //     })();
+  //   }
+  // }, []);
+  
   useEffect(() => {
-    if (localStorage.getItem('access_token') === null) {
-      window.location.href = '/login';
-    } else {
-      (async () => {
-        try {
-          const { data } = await axios.get(
-            'http://127.0.0.1:8000/home/', {
-              headers: {
-                'Content-Type': 'application/json'
-              }
-            }
-          );
-          setMessage(data.message);
-        } catch (e) {
-          console.log('not auth');
-        }
-      })();
+    if (localStorage.getItem("access_token") === null) {
+      window.location.href = "/login";
     }
   }, []);
-
   return (
     <>
       <Navbar />

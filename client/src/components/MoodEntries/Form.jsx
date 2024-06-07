@@ -101,27 +101,35 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import JournalEntryForm from "../JournalEntries/JournalForm";
 import 'react-toastify/dist/ReactToastify.css';
+import { fetchMoodEntries } from "../../Api";
 
 const MoodEntryForm = () => {
   const [mood, setMood] = useState("");
   const [moodEntries, setMoodEntries] = useState([]);
 
-  useEffect(() => {
-    const fetchMoodEntries = async () => {
-      try {
-        const response = await axios.get('http://127.0.0.1:8000/api/mood-entries/', {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('access')}`
-          }
-        });
-        setMoodEntries(response.data);
-      } catch (error) {
-        console.error('There was an error fetching the mood entries!', error);
-        toast.error('Error fetching mood entries. Please try again later.');
-      }
-    };
+  const fetchMoodEntries = async () => {
+    try {
+      const response = await axios.get('http://127.0.0.1:8000/api/mood-entries/', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+        }
+      });
+      setMoodEntries(response.data);
+    } catch (error) {
+      console.error('There was an error fetching the mood entries!', error);
+      toast.error('Error fetching mood entries. Please try again later.');
+    }
+  };
 
-    fetchMoodEntries();
+
+  useEffect(() => {
+    if (localStorage.getItem("access_token") === null) {
+      window.location.href = "/login";
+    } else {
+      (async () => {
+        fetchMoodEntries();
+      })();
+    }
   }, []);
 
   const handleSubmit = async (e) => {
@@ -129,7 +137,7 @@ const MoodEntryForm = () => {
     try {
       const response = await axios.post('http://127.0.0.1:8000/api/mood-entries/', { mood }, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('access')}`
+          'Authorization': `Bearer ${localStorage.getItem('access_token')}`
         }
       });
       toast.success("Mood Submitted Successfully");

@@ -67,7 +67,7 @@
 // bg-body-tertiary
 
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 import image1 from '../../assets/Images/image1.jpg';
 
@@ -91,6 +91,7 @@ const imagesList = [
 
 const Navbar = () => {
   const [isAuth, setIsAuth] = useState(false);
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (localStorage.getItem('access_token') !== null) {
@@ -98,6 +99,10 @@ const Navbar = () => {
     }
   }, []); // Empty dependency array to run once after initial render
 
+  const handleLogout = ()=>{
+    localStorage.removeItem("access_token")
+    navigate('/login')
+  }
   return (
     <>
       <nav className="navbar bg-body-tertiary">
@@ -120,7 +125,7 @@ const Navbar = () => {
           <div>
             {isAuth ? (
               
-              <Link to="/logout" className="nav-link "><button className="btn btn-outline-primary">Logout</button></Link>
+              <buttton onClick={handleLogout} className="nav-link "><button className="btn btn-outline-primary">Logout</button></buttton>
             ) : (
               <Link to="/login" className="nav-link btn btn-outline-primary"> <button className="btn btn-outline-primary">Login</button></Link>
             )}
